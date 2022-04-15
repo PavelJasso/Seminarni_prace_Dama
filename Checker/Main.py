@@ -5,11 +5,20 @@ from l_s import load_stones
 from Pr_s import print_stones
 from Pl_s import place_stones
 from Stone import stone
+from C_M import center_mouse
+from updt import screen_update
+from Is_st import is_stone
+from Is_st import is_true
+from move import move_stone
+
+#stále neřeším dámu
 
 def main():
     #názvy pro kameny
     w_stones = ["W1","W2","W3","W4","W5","W6","W7","W8","W9","W10","W11","W12"]
-    b_stones = ["B1","B2","B3","B4","B5","B6","B7","B8","B9","B10","B11","B12"]
+    b_stones = ["B1","B2","B3","B4","B5","B6","B7","B8","B9","B10","B11","B12"] 
+    chosed_stone=[]  
+    n_rct_pos=[0,0]
 
     load_stones(w_stones,b_stones)
 
@@ -56,41 +65,29 @@ def main():
               
             next(colors)
         game_exit = False
-
+    
         #pozadí a ohraničení
-        screen.fill((60, 70, 90))               #barva pozadí    
-        screen.blit(background, (20, 20))       #velikost ohraničení
-
-        #nastavení písmen a čísel hrací plochy
-        pg.font.init()
-        myfont = pg.font.SysFont('Comic Sans MS', 15)
-        pismena = ["A","B","C","D","E","F","G","H"]
-        poz=70
-        for i in pismena:
-            textsurface = myfont.render(f"{i}", False, (0,0,0))
-            screen.blit(textsurface,(poz,0))
-            poz=poz+100
-
-        poz=50
-        for i in range(8,0,-1):        
-            textsurface = myfont.render(f'{i}', False, (0,0,0))
-            screen.blit(textsurface,(10,poz))
-            poz=poz+100
+        screen_update(screen,background)       
 
         #běh okna/programu a eventy v něm
         while not game_exit:
             for event in pg.event.get():           #dostává, co se děje, hlavně trackuje pozici myši, zaznamená i stisknutí
-                print(event)            
+                print(event)
+                #pokud kliknu na křížek            
                 if event.type == pg.QUIT:
-                    game_exit = True        
+                    game_exit = True 
+                #pokud kliknu
+                if event.type == pg.MOUSEBUTTONDOWN:            
+                    mouse_position=list(pg.mouse.get_pos())
+                    mouse_position=center_mouse(mouse_position)
+                    #pokud se nerovna 0,0, tak nakresli červenj kruh s prostředkem(poté zkontroluje s kruhem)
+                    chosed_stone,n_rct_pos=move_stone(mouse_position,w_stones,b_stones,background,screen,tile_size,chosed_stone,n_rct_pos)
+                    
 
             pg.display.flip()                        #zobrazí display
             clock.tick(30)                          #zjistit, nemusí tu být  (pro plynulejší běh programu)      
 
         pg.quit()  
-            
-        print_stones(w_stones,b_stones)    
-
-
+        
 if __name__=="__main__":
     main()

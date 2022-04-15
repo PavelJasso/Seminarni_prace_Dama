@@ -2,7 +2,7 @@ import csv
 from Stone import stone
 
 def place_stones(ws,bs):       #už asi veškerá kontrola hotova, chce to někoho, kdo to bude testovat
-    filename="dama3.csv"
+    filename="dama4.csv"
     available_positions=["a7","a5","a3","a1","b8","b6","b4","b2","c7","c5","c3","c1","d8","d6","d4","d2","e7","e5","e3","e1","f8","f6","f4","f2","g7","g5","g3","g1","h8","h6","h4","h2"]     #pozice, kde mohou být kameny
     used_positions=[]           #pro kontrolu použitých polí
 
