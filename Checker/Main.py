@@ -1,4 +1,4 @@
-import csv
+#import csv
 import pygame as pg
 import itertools
 from l_s import load_stones
@@ -7,8 +7,8 @@ from Pl_s import place_stones
 from Stone import stone
 from C_M import center_mouse
 from updt import screen_update
-from Is_st import is_stone
-from Is_st import is_true
+#from Is_st import is_stone
+#from Is_st import is_true
 from move import move_stone
 
 #stále neřeším dámu
@@ -22,10 +22,10 @@ def main():
 
     load_stones(w_stones,b_stones)
 
-    print_stones(w_stones,b_stones)
+    #print_stones(w_stones,b_stones)
 
-    if place_stones(w_stones,b_stones)==True:    
-        print_stones(w_stones,b_stones)
+    if place_stones(w_stones,b_stones)==True:
+        #print_stones(w_stones,b_stones)          
 
         #BĚH PROGRAMU
         #inicializuje všechny pygame moduly

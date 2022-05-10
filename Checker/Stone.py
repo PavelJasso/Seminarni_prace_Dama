@@ -22,3 +22,6 @@ class stone:
     
     def get_center(self):
         return(list(self._center))
+
+    def get_color(self):
+        return self._color

@@ -28,7 +28,7 @@ def move_stone(mouse_p,ws,bs,bg,scr,tile_s,ch_stone,new_rct_pos):     #ch_stone 
         elif (ch_stone!=[])&(bol==False):          #pokud už mám vybraný kámen a hodlám udělat tah -> kliknu na pole bez kamene
             rect = (new_rct_pos[0],new_rct_pos[1], tile_s, tile_s)
             pg.draw.rect(bg, 'black', rect)
-            pg.draw.circle(bg, 'gray', mouse_p,40)                                 
+            pg.draw.circle(bg, 'purple', mouse_p,40)                                 
             ch_stone[0].center(mouse_p)   #chosed.center(mouse_p)
             ch_stone.pop(0)
             screen_update(scr,bg)   
