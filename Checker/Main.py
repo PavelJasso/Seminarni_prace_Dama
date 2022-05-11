@@ -10,6 +10,9 @@ from updt import screen_update
 #from Is_st import is_stone
 #from Is_st import is_true
 from move import move_stone
+from Plr import Player
+from Is_st import is_true
+from Chosed_stone import Chosed
 
 #stále neřeším dámu
 
@@ -19,6 +22,28 @@ def main():
     b_stones = ["B1","B2","B3","B4","B5","B6","B7","B8","B9","B10","B11","B12"] 
     chosed_stone=[]  
     n_rct_pos=[0,0]
+    Players=[]
+
+    next_plr=False    #další hráč nehraje, dokud neřeknu, že hraje
+
+    while True:
+        #zatím vše napíšu do mainu, pak rozdělit do listů!!!
+        #proti komu chci hrát?
+        player_question=input("Proti komu chete hrát? Pokud chcete hrát proti Botovi, napište PVE, pokud chete hrát s druhým hráčem napište PVP: ")
+
+        #rozhodování
+        if player_question=="PVP":
+            pl_w_name = input("Zadej jméno 1./bílého hráče: ")
+            Players.append(Player(pl_w_name,"white"))
+
+            pl_b_name = input("Zadej jméno 2./černého hráče: ")
+            Players.append(Player(pl_b_name,"gray"))
+            break
+        elif player_question=="PVE":
+            break    
+            
+    #hráč, který je teď na tahu
+    Player_now=Players[0]
 
     load_stones(w_stones,b_stones)
 
@@ -73,6 +98,7 @@ def main():
         while not game_exit:
             for event in pg.event.get():           #dostává, co se děje, hlavně trackuje pozici myši, zaznamená i stisknutí
                 print(event)
+                print(f"na řadě je hráč: {Player_now.get_name()}")
                 #pokud kliknu na křížek            
                 if event.type == pg.QUIT:
                     game_exit = True 
@@ -81,8 +107,26 @@ def main():
                     mouse_position=list(pg.mouse.get_pos())
                     mouse_position=center_mouse(mouse_position)
                     #pokud se nerovna 0,0, tak nakresli červenj kruh s prostředkem(poté zkontroluje s kruhem)
-                    chosed_stone,n_rct_pos=move_stone(mouse_position,w_stones,b_stones,background,screen,tile_size,chosed_stone,n_rct_pos)
-                    
+
+                    if mouse_position!=[0,0]:                                   #pokud jsem klikl na černý čtverec
+                        bol=is_true(w_stones,b_stones,mouse_position)                      #is true vrací boolen, proto bol
+
+                        if (bol==True)&(chosed_stone==[]):   #pokud je kámen, a zároveň jsem zatím žádný jiný nevybral -> nemohu vybrat 2 kameny
+                            chosed_stone=Chosed(mouse_position,w_stones,b_stones,background,screen,chosed_stone,Player_now)
+                            n_rct_pos[0]=mouse_position[0]-50
+                            n_rct_pos[1]=mouse_position[1]-50 
+                                                          #nová pozice pro náhradu kruhu za čtverec, při změně pozice
+                        elif (chosed_stone!=[])&(bol==False):
+                            next_plr=move_stone(mouse_position,background,screen,tile_size,chosed_stone,n_rct_pos,bol,next_plr)
+                            chosed_stone.pop(0)
+
+                    #rozhodování o hráčích
+                    if (Player_now==Players[0])&(next_plr==True):
+                        Player_now=Players[1]
+                        next_plr=False
+                    elif (Player_now==Players[1])&(next_plr==True):
+                        Player_now=Players[0]
+                        next_plr=False
 
             pg.display.flip()                        #zobrazí display
             clock.tick(30)                          #zjistit, nemusí tu být  (pro plynulejší běh programu)      
